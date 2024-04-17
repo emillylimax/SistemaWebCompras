@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Produto</title>
+</head>
+<body>
+    <h1>Cadastro de Produto</h1>
+    <form action="/cadastroProduto" method="post">
+        <label for="nome">Nome:</label><br>
+        <input type="text" id="nome" name="nome" required><br>
+        
+        <label for="descricao">Descrição:</label><br>
+        <textarea id="descricao" name="descricao" rows="4" cols="50" required></textarea><br>
+        
+        <label for="preco">Preço:</label><br>
+        <input type="number" id="preco" name="preco" step="0.01" required><br>
+        
+        <label for="quantidade">Quantidade:</label><br>
+        <input type="number" id="quantidade" name="quantidade" required><br>
+        
+        <button type="submit">Cadastrar Produto</button>
+    </form>
+    <form action="/logout" method="get">
+        <button type="submit">Logout</button>
+    </form>
+
+    <!-- Aqui será exibida a lista de produtos -->
+    <h2>Lista de Produtos Cadastrados</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Preço</th>
+                <th>Quantidade em Estoque</th>
+            </tr>
+        </thead>
+        <tbody id="productList">
+            <!-- Aqui serão exibidos os produtos -->
+        </tbody>
+    </table>
+
+    <!-- Script para buscar e exibir a lista de produtos -->
+    <script>
+        fetch('/listarProdutosLojista')
+            .then(response => response.json())
+            .then(products => {
+                const productList = document.getElementById('productList');
+                products.forEach(product => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${product.nome}</td>
+                        <td>${product.descricao}</td>
+                        <td>${product.preco}</td>
+                        <td>${product.quantidade}</td>
+                    `;
+                    productList.appendChild(row);
+                });
+            });
+    </script>
+</body>
+</html>
